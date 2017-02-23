@@ -10,6 +10,8 @@ import wave
 import argparse
 import sys
 from matplotlib import animation
+import pylab
+from mpl_toolkits.mplot3d import Axes3D
 
 DATA = array('h')
 THRESHOLD = 1000  # audio levels not normalised.
@@ -190,7 +192,7 @@ if __name__ == '__main__':
         #     data_chunk[k] = int(data_chunk[k]*win.Hamming(k,CHUNK_SIZE))
         dft = np.absolute(np.fft.rfft(data_chunk)).tolist()
         for k in xrange(len(dft)):
-            f.write(str(i*CHUNK_SIZE)+'\t'+str(dft[k])+'\t'+str(k*int(sys.argv[3]))+'\n')
+            f.write(str(i*CHUNK_SIZE/float(RATE))+'\t'+str(dft[k])+'\t'+str(k*int(sys.argv[3]))+'\n')
         f.write('\n')
     f.close()
 
@@ -200,6 +202,12 @@ if __name__ == '__main__':
     p.terminate()
 
     record_to_file('demo.wav',sample_width,data_all)
+    fig = pylab.figure()
+    axes = Axes3D(fig)
+
+    axes.plot_surface(xrange(0,TIME_IN_CHUNKS,CHUNK_SIZE), dft, xrange(0,len(dft)*int(sys.argv[3]),int(sys.argv[3])))
+
+    pylab.show()
 
 
 # fig = plt.figure()

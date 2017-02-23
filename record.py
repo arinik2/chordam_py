@@ -8,8 +8,8 @@ import sys
 
 FORMAT = pyaudio.paInt16
 RATE = 44100
-CHUNK_SIZE = RATE/int(sys.argv[3])
-TIME_IN_CHUNKS = int(sys.argv[1])*int(sys.argv[3])
+CHUNK_SIZE = RATE/10
+TIME_IN_CHUNKS = int(sys.argv[1])*10
 CHANNELS = 1
 
 if __name__ == '__main__':
@@ -18,7 +18,6 @@ if __name__ == '__main__':
 
     data_all,i,notes,count,sumFFT,toPlot = array('h'),0,[0 for c in xrange(CHUNK_SIZE/2)],0,np.array([0 for c in xrange(CHUNK_SIZE/2+1)]),[]
 
-    print 'do it'
     while i<TIME_IN_CHUNKS:
 
         data_chunk = array('h', stream.read(CHUNK_SIZE))
